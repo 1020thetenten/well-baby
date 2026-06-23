@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
+<title>Well Baby Clinic — Checklist ตามอายุ</title>
+<meta name="description" content="Checklist ตรวจสุขภาพเด็กดี Well Baby Clinic ตามอายุ อ้างอิงแบบฟอร์ม Ramathibodi RPD-031">
+<meta name="theme-color" content="#2F7E72">
+<link rel="manifest" href="./manifest.json">
+<link rel="icon" type="image/png" href="./icon-192.png">
+<link rel="apple-touch-icon" href="./apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Well Baby">
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F4F2EC;
+  --surface:#FFFFFF;
+  --surface-2:#FAF8F3;
+  --ink:#22302D;
+  --muted:#74807C;
+  --line:#E5E2D8;
+  --teal:#2F7E72;
+  --teal-deep:#1E5C53;
+  --teal-soft:#E6F0ED;
+  --coral:#D45B43;
+  --coral-soft:#FBEAE5;
+  --amber:#B8851C;
+  --amber-soft:#F6EED9;
+  --shadow:0 1px 2px rgba(34,48,45,.06),0 8px 24px rgba(34,48,45,.05);
+  --r:16px;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0}
+body{
+  font-family:'IBM Plex Sans Thai',system-ui,sans-serif;
+  background:var(--bg);color:var(--ink);
+  font-size:15px;line-height:1.5;
+  padding-bottom:96px;
+}
+.mono{font-family:'IBM Plex Mono',monospace}
+
+/* header */
+header{
+  position:sticky;top:0;z-index:30;
+  background:rgba(244,242,236,.86);backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--line);
+  padding:calc(env(safe-area-inset-top) + 12px) 16px 0;
+}
+.brand{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.cross{
+  width:30px;height:30px;border-radius:9px;background:var(--teal);
+  display:grid;place-items:center;color:#fff;flex:none;box-shadow:var(--shadow)
+}
+.cross svg{width:18px;height:18px}
+.brand h1{font-size:16px;font-weight:700;margin:0;letter-spacing:-.2px}
+.brand p{margin:0;font-size:11px;color:var(--muted);font-weight:500}
+
+/* age timeline */
+.timeline-wrap{position:relative;margin:0 -16px;padding:0 16px 12px}
+.timeline{
+  display:flex;gap:7px;overflow-x:auto;scrollbar-width:none;
+  padding:4px 0 6px;scroll-snap-type:x proximity;
+}
+.timeline::-webkit-scrollbar{display:none}
+.age-pill{
+  scroll-snap-align:center;flex:none;cursor:pointer;
+  border:1px solid var(--line);background:var(--surface);
+  border-radius:999px;padding:7px 13px;font-size:13px;font-weight:600;
+  color:var(--muted);white-space:nowrap;transition:.15s;position:relative;
+  display:flex;align-items:center;gap:6px;
+}
+.age-pill .dot{width:6px;height:6px;border-radius:50%;background:var(--line);transition:.15s}
+.age-pill.done .dot{background:var(--teal)}
+.age-pill.flag .dot{background:var(--coral)}
+.age-pill.active{background:var(--ink);color:#fff;border-color:var(--ink)}
+.age-pill.active .dot{background:#fff}
+
+/* stage hero */
+.hero{padding:16px;display:flex;align-items:flex-start;gap:14px}
+.hero-ring{position:relative;width:62px;height:62px;flex:none}
+.hero-ring svg{transform:rotate(-90deg)}
+.hero-ring .pct{
+  position:absolute;inset:0;display:grid;place-items:center;
+  font-size:14px;font-weight:700;font-family:'IBM Plex Mono',monospace;color:var(--teal-deep)
+}
+.hero-meta h2{margin:0;font-size:22px;font-weight:700;letter-spacing:-.4px}
+.hero-meta .en{font-size:12px;color:var(--muted);font-weight:500;letter-spacing:.3px;text-transform:uppercase}
+.hero-meta .next{
+  margin-top:7px;font-size:12.5px;color:var(--teal-deep);font-weight:600;
+  background:var(--teal-soft);display:inline-block;padding:3px 10px;border-radius:999px
+}
+
+/* child card */
+.child{margin:0 16px 4px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:12px;box-shadow:var(--shadow)}
+.child-row{display:flex;gap:8px}
+.child input{
+  flex:1;min-width:0;border:1px solid var(--line);border-radius:10px;
+  padding:8px 10px;font-family:inherit;font-size:13.5px;background:var(--surface-2);color:var(--ink)
+}
+.child input:focus{outline:none;border-color:var(--teal);background:#fff}
+.child input::placeholder{color:#a9b2ad}
+
+/* sections */
+main{padding:8px 16px 0}
+.card{
+  background:var(--surface);border:1px solid var(--line);border-radius:var(--r);
+  margin-bottom:12px;overflow:hidden;box-shadow:var(--shadow)
+}
+.card-head{
+  display:flex;align-items:center;gap:10px;padding:14px 15px;cursor:pointer;user-select:none
+}
+.card-head .ic{
+  width:30px;height:30px;border-radius:9px;flex:none;display:grid;place-items:center;
+  background:var(--teal-soft);color:var(--teal-deep)
+}
+.card-head .ic svg{width:17px;height:17px}
+.card-head h3{margin:0;font-size:15px;font-weight:700;flex:1;letter-spacing:-.2px}
+.card-head .tag{font-size:11px;font-weight:600;color:var(--muted);font-family:'IBM Plex Mono',monospace}
+.card-head .chev{transition:.2s;color:var(--muted)}
+.card.open .chev{transform:rotate(180deg)}
+.card-body{display:none;padding:0 15px 15px}
+.card.open .card-body{display:block;animation:slide .22s ease}
+@keyframes slide{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
+
+.subhead{font-size:11px;font-weight:700;color:var(--teal-deep);text-transform:uppercase;letter-spacing:.6px;margin:14px 0 7px}
+.subhead:first-child{margin-top:2px}
+
+/* finding rows (3-state) */
+.frow{
+  display:flex;align-items:center;gap:10px;padding:9px 11px;border-radius:11px;
+  border:1px solid var(--line);background:var(--surface-2);margin-bottom:6px;cursor:pointer;transition:.12s
+}
+.frow .lbl{flex:1;font-size:13.5px;font-weight:500;line-height:1.35}
+.frow .lbl .en{display:block;font-size:11px;color:var(--muted);font-weight:400}
+.frow .st{
+  font-size:11.5px;font-weight:700;padding:3px 9px;border-radius:999px;flex:none;
+  background:#EDEBE3;color:#9aa39e;min-width:46px;text-align:center
+}
+.frow[data-s="ok"]{border-color:#bfe0d8;background:#F0F7F4}
+.frow[data-s="ok"] .st{background:var(--teal);color:#fff}
+.frow[data-s="bad"]{border-color:#f0c4b8;background:var(--coral-soft)}
+.frow[data-s="bad"] .st{background:var(--coral);color:#fff}
+
+/* achievement chips (dev milestones) */
+.chips{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:4px}
+.chip{
+  cursor:pointer;border:1px solid var(--line);background:var(--surface-2);
+  border-radius:11px;padding:8px 11px;font-size:13px;font-weight:500;transition:.12s;
+  display:flex;align-items:center;gap:7px;line-height:1.3
+}
+.chip .bx{
+  width:17px;height:17px;border-radius:6px;border:1.5px solid #c6cdc8;flex:none;
+  display:grid;place-items:center;transition:.12s
+}
+.chip .bx svg{width:11px;height:11px;opacity:0;color:#fff}
+.chip[data-s="ok"]{border-color:#bfe0d8;background:#F0F7F4;color:var(--teal-deep)}
+.chip[data-s="ok"] .bx{background:var(--teal);border-color:var(--teal)}
+.chip[data-s="ok"] .bx svg{opacity:1}
+.chip[data-s="bad"]{border-color:#f0c4b8;background:var(--coral-soft);color:#a8412c}
+.chip[data-s="bad"] .bx{background:var(--coral);border-color:var(--coral)}
+.chip[data-s="bad"] .bx svg{opacity:1}
+
+.domain{margin-bottom:11px}
+.domain-lbl{display:flex;align-items:center;gap:7px;font-size:12px;font-weight:700;color:var(--ink);margin-bottom:7px}
+.domain-lbl .d{width:8px;height:8px;border-radius:50%}
+.dg{background:#3E8E7E}.df{background:#C9893B}.dl{background:#6E7BC4}.ds{background:#C26FA0}
+
+/* growth inputs */
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px}
+.fin{position:relative}
+.fin label{position:absolute;top:6px;left:11px;font-size:10px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.4px}
+.fin input{
+  width:100%;border:1px solid var(--line);border-radius:10px;background:var(--surface-2);
+  padding:21px 11px 7px;font-family:'IBM Plex Mono',monospace;font-size:14px;color:var(--ink)
+}
+.fin input:focus{outline:none;border-color:var(--teal);background:#fff}
+
+/* vaccine */
+.vrow{
+  display:flex;align-items:center;gap:10px;padding:10px 11px;border-radius:11px;
+  border:1px solid var(--line);background:var(--surface-2);margin-bottom:6px;cursor:pointer;transition:.12s
+}
+.vrow .bx{width:19px;height:19px;border-radius:6px;border:1.5px solid #c6cdc8;flex:none;display:grid;place-items:center;transition:.12s}
+.vrow .bx svg{width:12px;height:12px;opacity:0;color:#fff}
+.vrow .vc{flex:1;font-family:'IBM Plex Mono',monospace;font-size:13.5px;font-weight:600}
+.vrow .vn{font-size:11px;color:var(--muted);font-weight:400;font-family:'IBM Plex Sans Thai'}
+.vrow .opt{font-size:10px;font-weight:700;color:var(--amber);background:var(--amber-soft);padding:2px 7px;border-radius:999px;flex:none}
+.vrow[data-s="ok"]{border-color:#bfe0d8;background:#F0F7F4}
+.vrow[data-s="ok"] .bx{background:var(--teal);border-color:var(--teal)}
+.vrow[data-s="ok"] .bx svg{opacity:1}
+
+.note-box{
+  width:100%;border:1px solid var(--line);border-radius:11px;background:var(--surface-2);
+  padding:10px 11px;font-family:inherit;font-size:13.5px;color:var(--ink);resize:vertical;min-height:60px;margin-top:4px
+}
+.note-box:focus{outline:none;border-color:var(--teal);background:#fff}
+
+.legend{display:flex;gap:14px;font-size:11px;color:var(--muted);margin:2px 0 10px;flex-wrap:wrap}
+.legend span{display:flex;align-items:center;gap:5px}
+.legend i{width:9px;height:9px;border-radius:3px;display:inline-block}
+.li-ok{background:var(--teal)}.li-bad{background:var(--coral)}.li-n{background:#d6dad4}
+
+.oral-card{background:var(--amber-soft);border:1px solid #ecd9a8;border-radius:12px;padding:11px 13px;display:flex;align-items:center;gap:11px;cursor:pointer}
+.oral-card .bx{width:19px;height:19px;border-radius:6px;border:1.5px solid #cbb277;flex:none;display:grid;place-items:center}
+.oral-card .bx svg{width:12px;height:12px;opacity:0;color:#fff}
+.oral-card[data-s="ok"] .bx{background:var(--amber);border-color:var(--amber)}
+.oral-card[data-s="ok"] .bx svg{opacity:1}
+.oral-card .txt{flex:1}
+.oral-card .txt b{font-size:13px}
+.oral-card .txt .rx{font-family:'IBM Plex Mono',monospace;font-size:12px;color:#8a6a16;display:block;margin-top:1px}
+
+/* footer bar */
+.footbar{
+  position:fixed;left:0;right:0;bottom:0;z-index:40;
+  background:rgba(255,255,255,.92);backdrop-filter:blur(12px);
+  border-top:1px solid var(--line);
+  padding:10px 16px calc(env(safe-area-inset-bottom) + 10px);
+  display:flex;align-items:center;gap:10px
+}
+.foot-stat{flex:1;display:flex;gap:14px}
+.foot-stat .s{font-size:11px;color:var(--muted);font-weight:600}
+.foot-stat .s b{display:block;font-size:18px;color:var(--ink);font-family:'IBM Plex Mono',monospace;font-weight:600;line-height:1}
+.foot-stat .s.bad b{color:var(--coral)}
+.btn{
+  border:none;border-radius:12px;padding:11px 15px;font-family:inherit;font-size:13.5px;font-weight:700;
+  cursor:pointer;display:flex;align-items:center;gap:7px;transition:.12s
+}
+.btn svg{width:15px;height:15px}
+.btn-primary{background:var(--teal);color:#fff;box-shadow:var(--shadow)}
+.btn-primary:active{background:var(--teal-deep)}
+.btn-ghost{background:var(--surface-2);color:var(--muted);border:1px solid var(--line);padding:11px 12px}
+
+/* modal */
+.modal-bg{position:fixed;inset:0;z-index:60;background:rgba(34,48,45,.45);backdrop-filter:blur(3px);display:none;align-items:flex-end}
+.modal-bg.show{display:flex}
+.modal{background:var(--surface);width:100%;max-height:86vh;border-radius:22px 22px 0 0;display:flex;flex-direction:column;animation:up .25s ease}
+@keyframes up{from{transform:translateY(40px);opacity:.5}to{transform:none;opacity:1}}
+.modal-head{padding:16px 18px 12px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:10px}
+.modal-head h3{margin:0;font-size:16px;font-weight:700;flex:1}
+.modal-head .x{width:30px;height:30px;border-radius:8px;background:var(--surface-2);border:none;cursor:pointer;color:var(--muted);font-size:18px}
+.modal-body{padding:14px 18px;overflow:auto}
+.summary-txt{
+  font-family:'IBM Plex Mono',monospace;font-size:12.5px;line-height:1.6;white-space:pre-wrap;
+  background:var(--surface-2);border:1px solid var(--line);border-radius:12px;padding:13px;color:var(--ink)
+}
+.modal-foot{padding:12px 18px calc(env(safe-area-inset-bottom) + 14px);border-top:1px solid var(--line);display:flex;gap:10px}
+.modal-foot .btn{flex:1;justify-content:center}
+.toast{
+  position:fixed;left:50%;bottom:108px;transform:translateX(-50%) translateY(20px);
+  background:var(--ink);color:#fff;padding:10px 18px;border-radius:999px;font-size:13px;font-weight:600;
+  opacity:0;pointer-events:none;transition:.25s;z-index:70
+}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.disclaimer{font-size:11px;color:var(--muted);text-align:center;padding:4px 20px 14px;line-height:1.45}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand">
+    <div class="cross">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+    </div>
+    <div>
+      <h1>Well Baby Clinic</h1>
+      <p>Checklist ตรวจสุขภาพเด็กดี ตามอายุ · อ้างอิง Ramathibodi RPD-031</p>
+    </div>
+  </div>
+  <div class="timeline-wrap"><div class="timeline" id="timeline"></div></div>
+</header>
+
+<div class="hero">
+  <div class="hero-ring">
+    <svg width="62" height="62" viewBox="0 0 62 62">
+      <circle cx="31" cy="31" r="27" fill="none" stroke="#E5E2D8" stroke-width="6"/>
+      <circle id="ring" cx="31" cy="31" r="27" fill="none" stroke="#2F7E72" stroke-width="6" stroke-linecap="round" stroke-dasharray="169.6" stroke-dashoffset="169.6"/>
+    </svg>
+    <div class="pct" id="ringPct">0%</div>
+  </div>
+  <div class="hero-meta">
+    <div class="en" id="heroEn">AGE</div>
+    <h2 id="heroAge">—</h2>
+    <span class="next" id="heroNext"></span>
+  </div>
+</div>
+
+<div class="child">
+  <div class="child-row" style="margin-bottom:8px">
+    <input id="cName" placeholder="ชื่อ–สกุล เด็ก" autocomplete="off">
+    <input id="cHN" placeholder="HN" style="max-width:110px" autocomplete="off">
+  </div>
+  <div class="child-row">
+    <input id="cDate" placeholder="วันที่ตรวจ" autocomplete="off">
+    <input id="cInformant" placeholder="ผู้ให้ประวัติ / ผู้เลี้ยงดู" autocomplete="off">
+  </div>
+</div>
+
+<main id="sections"></main>
+
+<p class="disclaimer">ตารางวัคซีนอ้างอิงแบบฟอร์ม RPD-031 (พ.ศ.2556) — โปรดเทียบกับตาราง EPI/สมุดสุขภาพแม่และเด็กฉบับปัจจุบันก่อนสั่ง · เครื่องมือช่วยบันทึก ไม่ใช่เวชระเบียน</p>
+
+<div class="footbar">
+  <div class="foot-stat">
+    <div class="s"><b id="statDone">0</b>ทำแล้ว</div>
+    <div class="s bad"><b id="statFlag">0</b>ผิดปกติ</div>
+  </div>
+  <button class="btn btn-ghost" id="btnReset" title="ล้างข้อมูล">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg>
+  </button>
+  <button class="btn btn-primary" id="btnSummary">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><path d="M9 12h6M9 16h4"/></svg>
+    สรุป
+  </button>
+</div>
+
+<div class="modal-bg" id="modalBg">
+  <div class="modal">
+    <div class="modal-head">
+      <h3>สรุปการตรวจ</h3>
+      <button class="x" id="modalClose">×</button>
+    </div>
+    <div class="modal-body"><div class="summary-txt" id="summaryTxt"></div></div>
+    <div class="modal-foot">
+      <button class="btn btn-ghost" id="btnShare" style="flex:.6"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg>แชร์</button>
+      <button class="btn btn-primary" id="btnCopy"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>คัดลอกสรุป</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast">คัดลอกแล้ว</div>
+
+<script>
+/* ---------- DATA: Ramathibodi Child Health Record (RPD-031) ---------- */
+var PE = ["Head AF (กระหม่อม)","Skin","Eyes (Strabismus)","Ears","Nose / mouth / pharynx","Neck & thyroid","Cardiovascular system","Chest shape & lungs","Abdomen","Back (abnormal mass / scoliosis)","Anus / buttock","Genitalia","Femoral pulses","Extremities","Feet","Neurological exam","Moro's reflex"];
+var GROWTH = ["Weight for age","Height / Length for age","Weight for height"];
+
+var STAGES = [
+{id:"1m",label:"1 เดือน",en:"1 MONTH",next:"นัด 2 เดือน",
+ history:["การกินนม (นมแม่อย่างเดียว / นมผสม)","ท่านอนของลูก (นอนหงาย)","ลักษณะ–สีอุจจาระ, จำนวนครั้ง/วัน","ภาวะตัวเหลือง","แม่พักผ่อนเพียงพอ / รู้สึกอ่อนเพลีย (ซึมเศร้าหลังคลอด)","ความมั่นใจในการเลี้ยงดู / ผู้ช่วยเลี้ยง"],
+ dev:{g:["Lift head","Equal movements"],f:["Regard face"],l:["Response to bell"],s:["Smiles spontaneously"]},
+ special:["BCG scar","Jaundice","Nasolacrimal duct","Umbilicus (สะดือ)","Hip dislocation","Diaper rash","Hernia / phimosis","Labial adhesion","Club foot / feet"],
+ screening:["Cord-blood TSH screening","Newborn hearing screening"],
+ oral:null,
+ vacc:[{c:"HBV เข็ม 2",n:"เฉพาะมารดาเป็นพาหะ HBV"}],
+ guide:["ส่งเสริมนมแม่อย่างเดียว ไม่ต้องเสริมนมผสม / น้ำเปล่า","ไม่ให้อาหารอื่นนอกจากนมแม่","ไม่ใส่ถุงมือ คอยตัดเล็บให้สั้น","เฝ้าระวังภาวะร้องโคลิค (3 เดือน)","ห้องให้คำปรึกษานมแม่"]},
+
+{id:"2m",label:"2 เดือน",en:"2 MONTHS",next:"นัด 4 เดือน",
+ history:["การกินนม (นมแม่อย่างเดียว / ผสม)","ท่านอน / ที่นอนของลูก","สีและจำนวนครั้งของอุจจาระ","แม่พักผ่อนเพียงพอ / อ่อนเพลีย","ความสุขในการเลี้ยงลูก (มาก/ปานกลาง/น้อย)","การกลับไปทำงาน / ผู้ช่วยเลี้ยง"],
+ dev:{g:["Head up 45°"],f:["Follow to midline"],l:["Ooh / aah"],s:["Smiles responsively"]},
+ special:["Jaundice","Strabismus","Nasolacrimal duct","Diaper rash","Hip dislocation","Hernia / hydrocele","Phimosis","Labial adhesion","Club foot / feet"],
+ screening:["Newborn hearing screening","Vision screening (if indicated)"],
+ oral:null,
+ vacc:[{c:"DTP1-HBV2"},{c:"OPV1"},{c:"HIB1",opt:true}],
+ guide:["นมแม่อย่างเดียว ไม่ต้องให้น้ำ/นมผสม","ไม่ให้อาหารอื่น","ไม่ใส่ถุงมือ ตัดเล็บให้สั้น","เฝ้าระวังร้องโคลิค (3 เดือน)"]},
+
+{id:"4m",label:"4 เดือน",en:"4 MONTHS",next:"นัด 6 เดือน",
+ history:["การกินนม / วิธีทำความสะอาดขวดนม","อุจจาระ จำนวนครั้ง/วัน","แม่พักผ่อนเพียงพอ","ความสุขในการเลี้ยงลูก","การกลับไปทำงาน","ใครเป็นผู้ช่วยเลี้ยงดู"],
+ dev:{g:["Head up 90°","Sit – head steady","Bear weight on legs"],f:["Hands together","Follow 180°"],l:["Squeals","Laughs"],s:["Regard own hands"]},
+ special:["Jaundice","Strabismus","Nasolacrimal duct","Diaper rash","Hip dislocation","Hernia / hydrocele","Phimosis","Labial adhesion","Club foot / feet"],
+ screening:["Newborn hearing screening","Vision screening (if indicated)"],
+ oral:null,
+ vacc:[{c:"DTP2-HBV3"},{c:"OPV2"},{c:"HIB2",opt:true}],
+ guide:["ยังไม่ควรเริ่มอาหารเสริม จนอายุ ~6 เดือน","นมแม่อย่างเดียว","เฝ้าระวังร้องโคลิค"]},
+
+{id:"6m",label:"6 เดือน",en:"6 MONTHS",next:"นัด 9 เดือน",
+ history:["เริ่มอาหารเสริม ชนิด/ปริมาณ","อุจจาระ จำนวนครั้ง/วัน","แม่พักผ่อนเพียงพอ","ความสุขในการเลี้ยงลูก","การปรับตัวของพี่ (ถ้ามี)","ผู้ช่วยเลี้ยงดู"],
+ dev:{g:["Roll over","Pull to sit – no head lag"],f:["Transfer hand to hand"],l:["Turn to voice","Babbles"],s:["Work for toy","Feed self"]},
+ special:["Anemia","Strabismus","Nasolacrimal duct","Diaper rash","Hip dislocation","Hernia / hydrocele","Phimosis","Labial adhesion","Club foot / feet"],
+ screening:["Hearing screening (if indicated)","Vision screening (if indicated)"],
+ oral:"NaF (0.25 mg) 1 tab oral OD  #100 tablets",
+ vacc:[{c:"DTP3-HBV4"},{c:"OPV3"},{c:"HIB3",opt:true}],
+ guide:["เริ่มอาหารนิ่ม มีประโยชน์ ให้เป็นเวลา","ไม่ให้อาหาร/นม/น้ำ ที่มีรสหวาน","จัดสิ่งแวดล้อมการกิน นั่งเป็นที่ ไม่เปิดทีวี","ให้หลับได้เอง ไม่พึ่งขวดนม/อุ้มเดิน","งดนมมื้อดึก (night feeding)","แปรงฟัน/เช็ดเหงือกด้วยผ้าสะอาด วันละ 2 ครั้ง"]},
+
+{id:"9m",label:"9 เดือน",en:"9 MONTHS",next:"นัด 12 เดือน",
+ history:["ลูกกินอาหาร ใช้มือหยิบเข้าปาก","ฟันขึ้น / แปรงฟันให้ลูก","เคยมีอุบัติเหตุหรือไม่","ความสุขในการเลี้ยงลูก","วางแผนให้อยู่สถานเลี้ยงเด็ก / ฝากเลี้ยง","ผู้ช่วยเลี้ยงดู"],
+ dev:{g:["Sit – no support","Stand holding on"],f:["Thumb-finger grasp","Look for yarn"],l:["Combine syllables","Follow command + gesture"],s:["Play pat-a-cake","Play peek-a-boo"]},
+ special:["Anemia","Strabismus","Hip dislocation","Diaper rash","Hernia / hydrocele","Phimosis","Labial adhesion","Club foot / feet"],
+ screening:["Hearing screening (if indicated)","Vision screening (if indicated)"],
+ oral:"NaF (0.25 mg) 1 tab oral OD  #100 tablets",
+ vacc:[{c:"MMR1"},{c:"HIB1 or 2",opt:true}],
+ guide:["จัดอาหารนิ่ม มีประโยชน์ ให้เป็นเวลา","ไม่ให้อาหาร นม น้ำ ที่มีรสหวาน","ให้หลับเองได้ ไม่พึ่งขวดนม/อุ้มเดิน","ส่งเสริมหลับยาวตลอดคืน งดนมมื้อดึก","แปรงฟันด้วยยาสีฟัน วันละ 2 ครั้ง แล้วเช็ดออก","ระวังอุบัติเหตุ (เริ่มคลาน/ปีน)"]},
+
+{id:"12m",label:"12 เดือน",en:"12 MONTHS",next:"นัด 15 เดือน",
+ history:["ลูกกินอาหารเอง ใช้มือหยิบเข้าปาก","กินนมแม่อย่างเดียวหรือไม่","แปรงฟันด้วยยาสีฟัน วันละ 2 ครั้ง","ความสุขในการเลี้ยงลูก","วางแผนสถานเลี้ยงเด็ก / ฝากเลี้ยง","ผู้ช่วยเลี้ยงดู"],
+ dev:{g:["Stand for 2 seconds"],f:["Put block in cup"],l:["Dada / mama specific","Follow simple command"],s:["Imitate activities"]},
+ special:["Anemia","Strabismus","Diaper rash","Hernia / hydrocele","Phimosis","Labial adhesion","Feet and legs","Gait pattern","Sign of abuse"],
+ screening:["Hearing screening (if indicated)","Vision screening (if indicated)"],
+ oral:"NaF (0.25 mg) 1 tab oral OD  #100 tablets",
+ vacc:[{c:"JE1",opt:true},{c:"lived JE1",opt:true},{c:"Varicella 1",opt:true},{c:"HAV",opt:true}],
+ guide:["เริ่มเลิกขวดนม → ดื่มนม/น้ำจากถ้วย","อาหาร 3 มื้อ เสริมผลไม้","ไม่ให้อาหาร นม น้ำ ที่มีรสหวาน","จัดสิ่งแวดล้อมการกิน นั่งเป็นที่ ไม่เปิดทีวี","ให้หลับเองได้ งดนมมื้อดึก","ห้องให้คำปรึกษานมแม่"]},
+
+{id:"15m",label:"15 เดือน",en:"15 MONTHS",next:"นัด 18 เดือน",
+ history:["ลูกกินอาหารเองด้วยช้อน","เลิกนมแม่/ขวดนมหรือยัง","แปรงฟันด้วยยาสีฟัน วันละ 2 ครั้ง","เคยมีอุบัติเหตุหรือไม่","ความสุขในการเลี้ยงลูก","วางแผนสถานเลี้ยงเด็ก"],
+ dev:{g:["Walk well","Stoop and recover"],f:["Scribbles"],l:["Say meaningful words (2–5)"],s:["Help in house"]},
+ special:["Anemia","Strabismus","Diaper rash","Hernia / hydrocele","Phimosis","Labial adhesion","Feet and legs","Gait pattern","Sign of abuse"],
+ screening:["Hearing screening (if indicated)","Vision screening (if indicated)"],
+ oral:"NaF (0.25 mg) 1 tab oral OD  #100 tablets",
+ vacc:[{c:"JE",opt:true},{c:"lived JE 1/2",opt:true},{c:"Varicella",opt:true},{c:"HAV 1/2",opt:true}],
+ guide:["อาหาร 3 มื้อ เสริมผลไม้ ดื่มนมจากถ้วย","ไม่ให้อาหาร นม น้ำ ที่มีรสหวาน","จัดสิ่งแวดล้อมการกิน นั่งเป็นที่ ไม่เปิดทีวี","ให้หลับเองได้ งดนมมื้อดึก","แปรงฟันด้วยยาสีฟัน วันละ 2 ครั้ง"]},
+
+{id:"18m",label:"18 เดือน",en:"18 MONTHS",next:"นัด 24 เดือน",
+ history:["ลูกกินอาหารด้วยช้อนสำหรับเด็ก","แปรงฟันด้วยยาสีฟัน วันละ 2 ครั้ง","อุจจาระแข็ง / ท้องผูก / บอกถ่ายได้","เวลาลูกถูกขัดใจ แสดงอารมณ์โมโห ร้องดิ้น","เคยมีอุบัติเหตุหรือไม่","พ่อแม่คิดเห็นสอดคล้องเรื่องการเลี้ยงลูก"],
+ dev:{g:["Walk backwards"],f:["Tower of 2 cubes"],l:["Say meaningful words (5–10)","Point 1 body part"],s:["Drink from cup","Use spoon"]},
+ special:["Anemia","Strabismus","Diaper rash","Hernia / hydrocele","Phimosis","Labial adhesion","Feet and legs","Gait pattern","Sign of abuse"],
+ screening:["Hearing screening (if indicated)","Vision screening (if indicated)"],
+ oral:"NaF (0.25 mg) 1 tab oral OD  #100 tablets",
+ vacc:[{c:"DTP4"},{c:"OPV4"},{c:"JE1"},{c:"JE2",n:"ห่าง 2 สัปดาห์"},{c:"lived JE 1/2",opt:true},{c:"Varicella",opt:true},{c:"HAV 1/2",opt:true}],
+ guide:["ห้องให้คำปรึกษานมแม่ (เลิกนมแม่)","จัดอาหารที่นิ่มและมีประโยชน์ ให้เป็นเวลา","ไม่ให้อาหาร นม น้ำ ที่มีรสหวาน","นั่งกินเป็นที่ ไม่เปิดทีวี","ให้หลับเองได้ งดนมมื้อดึก","แปรงฟันด้วยยาสีฟัน วันละ 2 ครั้ง แล้วเช็ดออก","เริ่มฝึกขับถ่าย (toilet training)"]},
+
+{id:"24m",label:"24 เดือน / 2 ปี",en:"24 MONTHS",next:"นัด 3 ปี",
+ history:["ลูกกินอาหารด้วยช้อนเข้าปาก","แปรงฟันด้วยยาสีฟัน วันละ 2 ครั้ง","อุจจาระ / ฝึกขับถ่าย (บอกถ่ายได้)","เวลาถูกขัดใจ แสดงอารมณ์โมโห","เคยมีอุบัติเหตุหรือไม่","วางแผน daycare / อนุบาล"],
+ dev:{g:["Runs","Walk up steps","Kick ball forward"],f:["Tower of 6 cubes"],l:["Combine words","Point 6 body parts","Follow two-step command"],s:["Remove garment","Feed doll"]},
+ special:["Anemia","Strabismus","Diaper rash","Hernia / hydrocele","Phimosis","Labial adhesion","Feet and legs","Gait pattern","Sign of abuse"],
+ screening:["Hearing screening (if indicated)","Vision screening (if indicated)"],
+ oral:"NaF (0.25 mg) 1 tab oral OD  #100 tablets",
+ vacc:[{c:"JE"},{c:"lived JE 1/2",opt:true},{c:"Varicella",opt:true},{c:"HAV",opt:true}],
+ guide:["ดื่มน้ำ/นมจากถ้วย เลิกดูดนมขวด","อาหารมีประโยชน์ 3 มื้อ เสริมผลไม้","ไม่ให้อาหารรสหวาน ไม่บังคับให้กินอาหาร","นั่งกินเป็นที่ ไม่เปิดทีวี","ฝึกขับถ่าย (toilet training)","ให้หลับเองได้ นอนตลอดคืน งดนมมื้อดึก","จำกัดสื่อ/ทีวี ≤ 2 ชม./วัน","แปรงฟันด้วยยาสีฟัน เท่าเมล็ดถั่วเขียว"]},
+
+{id:"3y",label:"3 ปี",en:"3 YEARS",next:"นัด 4 ปี",
+ history:["กินอาหารด้วยช้อนเอง","นมที่ให้กิน / ขนมถุง น้ำอัดลม","แปรงฟันด้วยยาสีฟัน วันละ 2 ครั้ง","ปัสสาวะรดที่นอน / อุจจาระแข็ง–ท้องผูก","ความสุขในการเลี้ยงลูก","ลูกอยู่สถานเลี้ยงเด็ก / เตรียมอนุบาล"],
+ dev:{g:["Jump up"],f:["Copy circle"],l:["Name one color","Know own name"],s:["Name friend"]},
+ special:["Anemia","Strabismus","Diaper rash","Hernia / hydrocele","Phimosis","Labial adhesion","Feet and legs","Gait pattern","Sign of abuse"],
+ screening:["Hearing screening (if indicated)","Vision screening (if indicated)"],
+ oral:"NaF (0.25 mg) 1 tab oral OD  #100 tablets",
+ vacc:[{c:"HAV 1/2",opt:true},{c:"Varicella",opt:true}],
+ guide:["ดื่มน้ำ/นมจากถ้วย เลิกดูดนมขวด","อาหารมีประโยชน์ 3 มื้อ เสริมผลไม้","ไม่ให้กินขนม น้ำหวาน / ไม่บังคับให้กิน","นั่งกินเป็นที่ ไม่เปิดทีวี","ฝึกขับถ่าย (toilet training)","ให้หลับเองได้ นอนตลอดคืน","daycare / อนุบาล","แปรงฟันด้วยยาสีฟัน เท่าเมล็ดถั่วเขียว"]},
+
+{id:"4y",label:"4 ปี",en:"4 YEARS",next:"นัด 5 ปี",
+ history:["กินอาหารด้วยช้อน/ส้อมเอง","นมที่ให้ / ขนมถุง น้ำอัดลม","แปรงฟันเองได้ / ปัสสาวะรดที่นอน","อุจจาระแข็ง ท้องผูก ถ่ายลำบาก","ปรับตัวเข้าโรงเรียน / มีเพื่อนเล่น","เคยมีอุบัติเหตุหรือไม่"],
+ dev:{g:["Broad jump","Hops"],f:["Copy square"],l:["Name 4 colors","Count 1 block"],s:["Brush teeth"]},
+ special:["Anemia","Myopia (สายตาสั้น)","Tonsils","Hernia / hydrocele","Phimosis","Labial adhesion","Bow leg / knock knee","Gait pattern","Sign of abuse"],
+ screening:["Urinalysis","Vision screening (if indicated)"],
+ oral:"NaF (0.25 mg) 2 tab oral OD  #100 tablets",
+ vacc:[{c:"DTP5"},{c:"OPV5"},{c:"MMR2"},{c:"HAV",opt:true},{c:"Varicella",opt:true}],
+ guide:["อาหารมีประโยชน์ 3 มื้อ เสริมผลไม้","ไม่ให้กินขนม น้ำหวาน / ไม่บังคับให้กิน","นั่งกินเป็นที่ ไม่เปิดทีวี","ให้หลับเองได้","ปรับตัวเข้าโรงเรียนอนุบาล","แปรงฟันด้วยยาสีฟัน เท่าเมล็ดถั่วเขียว"]},
+
+{id:"5y",label:"5 ปี",en:"5 YEARS",next:"นัด 6 ปี",
+ history:["กินอาหารด้วยช้อน/ส้อมเอง","นมที่ให้ / ขนมถุง น้ำอัดลม","แปรงฟัน ชอบกินยาสีฟันหรือไม่","ปัสสาวะรดที่นอน / ท้องผูก ถ่ายลำบาก","เรียน-ทำการบ้านได้ / มีเพื่อนเล่น","ความสุขในการเลี้ยงลูก"],
+ dev:{g:["Balance each foot 5 sec"],f:["Copy triangle"],l:["Tell stories"],s:["Dress without help"]},
+ special:["Anemia","Myopia (สายตาสั้น)","Tonsils","Hernia / hydrocele","Phimosis","Labial adhesion","Bow leg / knock knee","Gait pattern","Sign of abuse"],
+ screening:["Urinalysis","Vision screening (if indicated)"],
+ oral:"NaF (0.25 mg) 2 tab oral OD  #100 tablets",
+ vacc:[{c:"DTP5"},{c:"OPV5"},{c:"MMR2"},{c:"HAV 1/2",opt:true},{c:"Varicella",opt:true}],
+ guide:["อาหารมีประโยชน์ 3 มื้อ เสริมผลไม้","ไม่ให้กินขนม น้ำหวาน / ไม่บังคับให้กิน","นั่งกินเป็นที่ ไม่เปิดทีวี","จำกัดทีวี/สื่อ < 2 ชม./วัน","ให้หลับเองได้","แปรงฟันด้วยยาสีฟัน เท่าเมล็ดถั่วเขียว"]},
+
+{id:"6y",label:"6 ปี",en:"6 YEARS",next:"OPD Gen R1 / นัด 12 เดือน",
+ history:["กินอาหารด้วยช้อนเอง","นมที่ให้ / ขนมถุง น้ำอัดลม","แปรงฟัน ชอบกินยาสีฟันหรือไม่","ปัสสาวะรดที่นอน / ท้องผูก ถ่ายลำบาก","เรียน-ทำการบ้านได้ / มีเพื่อนเล่น","เคยมีอุบัติเหตุหรือไม่"],
+ dev:{g:["Heel to toe walk"],f:["Draw a person"],l:["Define words"],s:["Play games with rules"]},
+ special:["Anemia","Myopia (สายตาสั้น)","Bow leg / knock knee","Hernia / hydrocele","Phimosis","Vaginitis","Genitalia / anus","Sign of abuse"],
+ screening:["Urinalysis","Vision screening (if indicated)"],
+ oral:"NaF (0.25 mg) 4 tab oral OD  #100 tablets",
+ vacc:[{c:"DTP5"},{c:"OPV5"},{c:"MMR2"},{c:"HAV 1/2",opt:true},{c:"Varicella",opt:true}],
+ guide:["อาหารมีประโยชน์ 3 มื้อ เสริมผลไม้","ไม่ให้กินขนม น้ำหวาน","นั่งกินเป็นที่ ไม่เปิดทีวี","จำกัดทีวี/สื่อ < 2 ชม./วัน","ให้หลับเองได้","แปรงฟันด้วยยาสีฟัน"]}
+];
+
+var DOMAINS=[["g","Gross motor","dg"],["f","Fine motor","df"],["l","Language","dl"],["s","Personal–social","ds"]];
+
+/* ---------- STATE ---------- */
+var state={};
+function blank(){return{history:{},dev:{},special:{},pe:{},growth:{},screening:{},vacc:{},guide:{},oral:0,vitals:{},notes:""}}
+STAGES.forEach(function(s){state[s.id]=blank()});
+var cur=0;
+var openCards={dev:true,pe:false,special:false,history:false,growth:false,screen:false,vacc:true,oral:false,guide:false,notes:false};
+
+var ICONS={
+ history:'<path d="M12 8v4l3 2"/><circle cx="12" cy="12" r="9"/>',
+ dev:'<path d="M12 2v6M12 22v-6M2 12h6M22 12h-6"/><circle cx="12" cy="12" r="3.2"/>',
+ pe:'<path d="M8 2v3a4 4 0 0 0 8 0V2"/><path d="M9 5v6a6 6 0 0 0 6 6h0a3 3 0 0 1 3 3v2"/><circle cx="20" cy="20" r="2"/>',
+ special:'<path d="M10.3 3.3a2 2 0 0 1 3.4 0l7.5 13a2 2 0 0 1-1.7 3H4.5a2 2 0 0 1-1.7-3z"/><path d="M12 9v4M12 17h.01"/>',
+ growth:'<path d="M3 3v18h18"/><path d="M7 14l4-4 3 3 5-6"/>',
+ screen:'<circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/>',
+ vacc:'<path d="M18 2l4 4M17 7l-9 9-3 1 1-3 9-9zM14 6l4 4"/>',
+ oral:'<path d="M12 5c-2-2-6-2-7 1-1 4 1 11 3 12 1 .5 1.5-2 4-2s3 2.5 4 2c2-1 4-8 3-12-1-3-5-3-7-1"/>',
+ guide:'<path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.3 1 2.3h6c0-1 .4-1.8 1-2.3A7 7 0 0 0 12 2z"/>',
+ notes:'<path d="M12 20h9M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/>'
+};
+function svg(d,sw){return'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="'+(sw||1.9)+'" stroke-linecap="round" stroke-linejoin="round">'+d+'</svg>'}
+var CHK='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 6"/></svg>';
+
+/* ---------- RENDER ---------- */
+function renderTimeline(){
+  var t=document.getElementById("timeline");t.innerHTML="";
+  STAGES.forEach(function(s,i){
+    var st=state[s.id];var done=countDone(s,st)>0;var flag=countFlag(s,st)>0;
+    var p=document.createElement("div");
+    p.className="age-pill"+(i===cur?" active":"")+(flag?" flag":(done?" done":""));
+    p.innerHTML='<span class="dot"></span>'+s.label;
+    p.onclick=function(){cur=i;render();var pe=t.children[i];if(pe)pe.scrollIntoView({behavior:"smooth",inline:"center",block:"nearest"})};
+    t.appendChild(p);
+  });
+}
+
+function frow(group,key,label,en){
+  var s=state[STAGES[cur].id][group][key]||"";
+  var stTxt=s==="ok"?"ปกติ":(s==="bad"?"ผิดปกติ":"–");
+  return'<div class="frow" data-s="'+s+'" data-g="'+group+'" data-k="'+esc(key)+'"><span class="lbl">'+label+(en?'<span class="en">'+en+'</span>':'')+'</span><span class="st">'+stTxt+'</span></div>';
+}
+
+function render(){
+  var s=STAGES[cur],st=state[s.id];
+  renderTimeline();
+  document.getElementById("heroAge").textContent=s.label;
+  document.getElementById("heroEn").textContent=s.en;
+  document.getElementById("heroNext").textContent="ครั้งต่อไป · "+s.next;
+
+  var H="";
+
+  // History
+  H+=card("history","ประวัติ / ซักถามผู้เลี้ยงดู","HISTORY",
+    '<div class="legend"><span><i class="li-ok"></i>ปกติ</span><span><i class="li-bad"></i>มีปัญหา</span></div>'+
+    s.history.map(function(q,i){return frow("history","h"+i,q)}).join(""));
+
+  // Development
+  var dev=DOMAINS.map(function(d){
+    var items=s.dev[d[0]]||[];
+    return'<div class="domain"><div class="domain-lbl"><span class="d '+d[2]+'"></span>'+d[1]+'</div><div class="chips">'+
+      items.map(function(it,i){
+        var ds=st.dev[d[0]+i]||"";
+        return'<div class="chip" data-s="'+ds+'" data-dom="'+d[0]+'" data-i="'+i+'"><span class="bx">'+CHK+'</span>'+it+'</div>';
+      }).join("")+'</div></div>';
+  }).join("");
+  H+=card("dev","พัฒนาการ 4 ด้าน","DEVELOPMENT",
+    '<div class="legend"><span><i class="li-ok"></i>ทำได้</span><span><i class="li-bad"></i>ทำไม่ได้</span><span><i class="li-n"></i>ยังไม่ประเมิน</span></div>'+dev);
+
+  // Growth + vitals
+  var v=st.vitals;
+  var vit='<div class="grid2">'+
+    fi("vTemp","Temp °C",v.vTemp)+fi("vWt","น้ำหนัก (g)",v.vWt)+
+    fi("vLt","ส่วนสูง (cm)",v.vLt)+fi("vHC","HC (cm)",v.vHC)+'</div>';
+  var gr='<div class="subhead">เกณฑ์การเจริญเติบโต</div>'+GROWTH.map(function(g,i){return frow("growth","gw"+i,g)}).join("");
+  H+=card("growth","การเจริญเติบโต","GROWTH & VITALS",vit+gr);
+
+  // Physical exam
+  H+=card("pe","ตรวจร่างกาย","PHYSICAL EXAM",
+    '<div class="legend"><span><i class="li-ok"></i>Normal</span><span><i class="li-bad"></i>Abnormal</span></div>'+
+    PE.map(function(p,i){return frow("pe","p"+i,p)}).join(""));
+
+  // Special consideration
+  H+=card("special","Special consideration เฉพาะวัย","SPECIAL",
+    '<div class="legend"><span><i class="li-ok"></i>ตรวจแล้วปกติ</span><span><i class="li-bad"></i>พบความผิดปกติ</span></div>'+
+    s.special.map(function(p,i){return frow("special","s"+i,p)}).join(""));
+
+  // Screening
+  H+=card("screen","การตรวจคัดกรองพิเศษ","SCREENING",
+    s.screening.map(function(p,i){return ach("screening","sc"+i,p)}).join(""));
+
+  // Vaccine
+  H+=card("vacc","วัคซีนที่อายุ "+s.label,"VACCINE",
+    s.vacc.map(function(vc,i){
+      var on=st.vacc["v"+i]?"ok":"";
+      return'<div class="vrow" data-s="'+on+'" data-vi="'+i+'"><span class="bx">'+CHK+'</span><span class="vc">'+vc.c+(vc.n?'<span class="vn"> · '+vc.n+'</span>':'')+'</span>'+(vc.opt?'<span class="opt">ทางเลือก</span>':'')+'</div>';
+    }).join(""));
+
+  // Oral health
+  if(s.oral){
+    H+=card("oral","สุขภาพช่องปาก","ORAL HEALTH",
+      '<div class="oral-card" data-s="'+(st.oral?"ok":"")+'" id="oralCard"><span class="bx">'+CHK+'</span><div class="txt"><b>สั่งฟลูออไรด์เสริม</b><span class="rx">'+s.oral+'</span></div></div>');
+  }
+
+  // Guidance
+  H+=card("guide","คำแนะนำล่วงหน้า (Anticipatory guidance)","GUIDANCE",
+    s.guide.map(function(g,i){return ach("guide","g"+i,g)}).join(""));
+
+  // Notes
+  H+=card("notes","Diagnosis / Problem list / Plan","NOTES",
+    '<textarea class="note-box" id="noteArea" placeholder="ปัญหาที่พบ, แผนการรักษา, คำปรึกษาเพิ่มเติม...">'+esc(st.notes)+'</textarea>');
+
+  document.getElementById("sections").innerHTML=H;
+  bind();
+  updateStats();
+}
+
+function fi(id,lab,val){return'<div class="fin"><label>'+lab+'</label><input data-vit="'+id+'" value="'+esc(val||"")+'" inputmode="decimal" autocomplete="off"></div>'}
+function card(key,title,tag,body){
+  return'<div class="card'+(openCards[key]?" open":"")+'" data-card="'+key+'"><div class="card-head"><span class="ic">'+svg(ICONS[key])+'</span><h3>'+title+'</h3><span class="tag">'+tag+'</span><span class="chev">'+svg('<path d="M6 9l6 6 6-6"/>',2.2)+'</span></div><div class="card-body">'+body+'</div></div>';
+}
+function ach(group,key,label){
+  var on=state[STAGES[cur].id][group][key]?"ok":"";
+  return'<div class="vrow" data-s="'+on+'" data-ach="'+group+'" data-k="'+esc(key)+'"><span class="bx">'+CHK+'</span><span class="vc" style="font-family:\'IBM Plex Sans Thai\';font-weight:500;font-size:13.5px">'+label+'</span></div>';
+}
+function esc(s){return(s+"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}
+
+/* ---------- INTERACTION ---------- */
+function bind(){
+  var sid=STAGES[cur].id,st=state[sid];
+  // card toggle
+  document.querySelectorAll(".card-head").forEach(function(h){
+    h.onclick=function(){var c=h.parentNode,k=c.getAttribute("data-card");openCards[k]=!openCards[k];c.classList.toggle("open")};
+  });
+  // finding rows cycle: ""->ok->bad->""
+  document.querySelectorAll(".frow").forEach(function(r){
+    r.onclick=function(){
+      var g=r.getAttribute("data-g"),k=r.getAttribute("data-k");
+      var c=st[g][k]||"";var nx=c===""?"ok":(c==="ok"?"bad":"");
+      st[g][k]=nx;r.setAttribute("data-s",nx);
+      r.querySelector(".st").textContent=nx==="ok"?"ปกติ":(nx==="bad"?"ผิดปกติ":"–");
+      updateStats();
+    };
+  });
+  // dev chips cycle
+  document.querySelectorAll(".chip").forEach(function(ch){
+    ch.onclick=function(){
+      var dom=ch.getAttribute("data-dom"),i=ch.getAttribute("data-i"),key=dom+i;
+      var c=st.dev[key]||"";var nx=c===""?"ok":(c==="ok"?"bad":"");
+      st.dev[key]=nx;ch.setAttribute("data-s",nx);updateStats();
+    };
+  });
+  // vaccine
+  document.querySelectorAll("[data-vi]").forEach(function(r){
+    r.onclick=function(){var i=r.getAttribute("data-vi");st.vacc["v"+i]=!st.vacc["v"+i];r.setAttribute("data-s",st.vacc["v"+i]?"ok":"");updateStats()};
+  });
+  // achievements (screening, guide)
+  document.querySelectorAll("[data-ach]").forEach(function(r){
+    r.onclick=function(){var g=r.getAttribute("data-ach"),k=r.getAttribute("data-k");st[g][k]=!st[g][k];r.setAttribute("data-s",st[g][k]?"ok":"");updateStats()};
+  });
+  // oral
+  var oc=document.getElementById("oralCard");
+  if(oc)oc.onclick=function(){st.oral=!st.oral;oc.setAttribute("data-s",st.oral?"ok":"");updateStats()};
+  // vitals
+  document.querySelectorAll("[data-vit]").forEach(function(inp){
+    inp.oninput=function(){st.vitals[inp.getAttribute("data-vit")]=inp.value};
+  });
+  // notes
+  var na=document.getElementById("noteArea");
+  if(na)na.oninput=function(){st.notes=na.value};
+}
+
+function countDone(s,st){
+  var n=0;
+  for(var k in st.history)if(st.history[k])n++;
+  for(var k in st.dev)if(st.dev[k]==="ok")n++;
+  for(var k in st.pe)if(st.pe[k])n++;
+  for(var k in st.growth)if(st.growth[k])n++;
+  for(var k in st.special)if(st.special[k])n++;
+  for(var k in st.screening)if(st.screening[k])n++;
+  for(var k in st.vacc)if(st.vacc[k])n++;
+  for(var k in st.guide)if(st.guide[k])n++;
+  if(st.oral)n++;
+  return n;
+}
+function countFlag(s,st){
+  var n=0;
+  ["history","pe","special","growth","dev"].forEach(function(g){for(var k in st[g])if(st[g][k]==="bad")n++});
+  return n;
+}
+function totalItems(s){
+  var t=s.history.length;
+  DOMAINS.forEach(function(d){t+=(s.dev[d[0]]||[]).length});
+  t+=PE.length+s.special.length+GROWTH.length+s.screening.length+s.vacc.length+s.guide.length+(s.oral?1:0);
+  return t;
+}
+function updateStats(){
+  var s=STAGES[cur],st=state[s.id];
+  var done=countDone(s,st),flag=countFlag(s,st),total=totalItems(s);
+  document.getElementById("statDone").textContent=done;
+  document.getElementById("statFlag").textContent=flag;
+  var pct=total?Math.round(done/total*100):0;
+  document.getElementById("ringPct").textContent=pct+"%";
+  document.getElementById("ring").style.strokeDashoffset=169.6*(1-pct/100);
+  // refresh timeline dots
+  var pills=document.getElementById("timeline").children;
+  for(var i=0;i<STAGES.length;i++){
+    var stt=state[STAGES[i].id];var d=countDone(STAGES[i],stt)>0,f=countFlag(STAGES[i],stt)>0;
+    pills[i].classList.toggle("done",d&&!f&&i!==cur);
+    pills[i].classList.toggle("flag",f);
+  }
+}
+
+/* ---------- SUMMARY ---------- */
+function buildSummary(){
+  var s=STAGES[cur],st=state[s.id];
+  var name=val("cName"),hn=val("cHN"),date=val("cDate"),inf=val("cInformant");
+  var L=[];
+  L.push("WELL BABY CLINIC — "+s.label);
+  if(name||hn)L.push((name?name:"")+(hn?"  HN "+hn:""));
+  if(date)L.push("วันที่ตรวจ: "+date);
+  if(inf)L.push("ผู้ให้ประวัติ: "+inf);
+  L.push("");
+
+  var v=st.vitals,vline=[];
+  if(v.vWt)vline.push("Wt "+v.vWt+"g");if(v.vLt)vline.push("Lt "+v.vLt);if(v.vHC)vline.push("HC "+v.vHC);if(v.vTemp)vline.push("T "+v.vTemp);
+  if(vline.length)L.push("Vitals/Growth: "+vline.join(", "));
+
+  // development summary
+  var devOk=[],devBad=[];
+  DOMAINS.forEach(function(d){(s.dev[d[0]]||[]).forEach(function(it,i){var x=st.dev[d[0]+i];if(x==="ok")devOk.push(it);else if(x==="bad")devBad.push(it)})});
+  if(devBad.length)L.push("พัฒนาการ — ทำไม่ได้: "+devBad.join(", "));
+  if(devOk.length&&!devBad.length)L.push("พัฒนาการ: สมวัย (ผ่าน "+devOk.length+" ข้อ)");
+  else if(devOk.length)L.push("พัฒนาการ — ทำได้: "+devOk.join(", "));
+
+  // abnormal findings
+  var ab=[];
+  s.history.forEach(function(q,i){if(st.history["h"+i]==="bad")ab.push("Hx: "+q)});
+  PE.forEach(function(p,i){if(st.pe["p"+i]==="bad")ab.push(p)});
+  s.special.forEach(function(p,i){if(st.special["s"+i]==="bad")ab.push(p)});
+  GROWTH.forEach(function(g,i){if(st.growth["gw"+i]==="bad")ab.push(g)});
+  if(ab.length)L.push("ผิดปกติ/ติดตาม: "+ab.join("; "));
+  else L.push("ตรวจร่างกาย & special consideration: ไม่พบความผิดปกติ");
+
+  // vaccine
+  var vc=[];s.vacc.forEach(function(x,i){if(st.vacc["v"+i])vc.push(x.c)});
+  if(vc.length)L.push("วัคซีนที่ให้: "+vc.join(", "));
+
+  if(st.oral&&s.oral)L.push("Oral: "+s.oral);
+
+  var sc=[];s.screening.forEach(function(x,i){if(st.screening["sc"+i])sc.push(x)});
+  if(sc.length)L.push("คัดกรอง: "+sc.join(", "));
+
+  var g=[];s.guide.forEach(function(x,i){if(st.guide["g"+i])g.push(x)});
+  if(g.length)L.push("คำแนะนำที่ให้: "+g.join("; "));
+
+  if(st.notes)L.push("\nNote: "+st.notes);
+  L.push("\nนัดครั้งต่อไป: "+s.next);
+  return L.join("\n");
+}
+function val(id){return document.getElementById(id).value.trim()}
+
+/* ---------- BUTTONS ---------- */
+document.getElementById("btnSummary").onclick=function(){
+  document.getElementById("summaryTxt").textContent=buildSummary();
+  document.getElementById("modalBg").classList.add("show");
+};
+document.getElementById("modalClose").onclick=closeModal;
+document.getElementById("modalBg").onclick=function(e){if(e.target===this)closeModal()};
+function closeModal(){document.getElementById("modalBg").classList.remove("show")}
+document.getElementById("btnCopy").onclick=function(){copyText(buildSummary());};
+document.getElementById("btnShare").onclick=function(){
+  var t=buildSummary();
+  if(navigator.share){navigator.share({text:t}).catch(function(){copyText(t)});}
+  else copyText(t);
+};
+function copyText(t){
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+    navigator.clipboard.writeText(t).then(showToast).catch(function(){fallbackCopy(t)});
+  }else fallbackCopy(t);
+}
+function fallbackCopy(t){
+  var ta=document.createElement("textarea");ta.value=t;ta.style.position="fixed";ta.style.opacity="0";
+  document.body.appendChild(ta);ta.select();try{document.execCommand("copy");showToast()}catch(e){}document.body.removeChild(ta);
+}
+function showToast(){var t=document.getElementById("toast");t.classList.add("show");setTimeout(function(){t.classList.remove("show")},1600);}
+document.getElementById("btnReset").onclick=function(){
+  if(confirm("ล้างข้อมูลการตรวจของช่วงอายุ "+STAGES[cur].label+" ?")){
+    state[STAGES[cur].id]=blank();render();
+  }
+};
+
+render();
+
+/* ---------- PWA: offline + installable ---------- */
+if("serviceWorker" in navigator){
+  window.addEventListener("load",function(){
+    navigator.serviceWorker.register("./sw.js").catch(function(){});
+  });
+}
+</script>
+</body>
+</html>
